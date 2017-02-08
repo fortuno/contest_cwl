@@ -45,7 +45,8 @@ inputs:
     type: string
   - id: s3cfg_section
     type: string
-
+  - id: num_threads
+    type: string
 
 
 outputs:
@@ -312,6 +313,8 @@ steps:
         source: lane_level_contamination
       - id: population
         source: population
+      - id: num_threads
+        source: num_threads
     out:
       - id: output
 
