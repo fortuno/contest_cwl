@@ -158,6 +158,12 @@ inputs:
     inputBinding:
       prefix: -L
 
+  - id: num_threads
+    type: string
+    default: null
+    inputBinding:
+      prefix: --num_threads
+
 outputs:
   - id: output
     type: File
