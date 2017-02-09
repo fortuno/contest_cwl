@@ -28,11 +28,12 @@ def run_command(cmd, logger=None, shell_var=False):
 
     return exit_code
 
-def upload_to_cleversafe(cwltool_path, remote_output, local_input, config, credentials, endpoint_json, s3cfg_section):
+def upload_to_cleversafe(cwltool_path, basedir, remote_output, local_input, config, credentials, endpoint_json, s3cfg_section):
     """ Upload a file to cleversafe to a folder """
 
     if (remote_output != "" and (os.path.isfile(local_input) or os.path.isdir(local_input))):
-        cmd = [cwltool_path, '/home/ubuntu/contest_cwl/tools/aws_s3_put.cwl', '--aws_config', config, '--aws_shared_credentials', credentials, '--endpoint_json', endpoint_json, '--s3cfg_section', s3cfg_section, '--s3uri', remote_output, '--input', local_input]
+        s3_cwl = basedir + '/contest_cwl/tools/aws_s3_put.cwl'
+        cmd = [cwltool_path, s3_cwl, '--aws_config', config, '--aws_shared_credentials', credentials, '--endpoint_json', endpoint_json, '--s3cfg_section', s3cfg_section, '--s3uri', remote_output, '--input', local_input]
         exit_code = run_command(cmd, logger)
     else:
         raise Exception("invalid input %s or output %s" %(local_input, remote_output))
