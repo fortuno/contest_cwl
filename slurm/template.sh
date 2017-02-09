@@ -53,4 +53,4 @@ trap cleanup EXIT
 --basedir $wkdir \
 --signpost_base_url $base_url \
 --s3dir $s3dir \
---cwl $wkdir/contest_cwl/workflows/contest-tool-workflow.cwl.yaml
+--cwl $wkdir/contest_cwl/workflow/contest-tool-workflow.cwl.yaml
