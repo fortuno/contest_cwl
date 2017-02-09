@@ -92,7 +92,7 @@ if __name__ == "__main__":
     cwltool_path = '/home/ubuntu/.virtualenvs/jhs_cwl/bin/cwltool'
     cmd = [cwltool_path,
             "--debug",
-            "--custom-net host",
+            "--custom-net", "host",
             "--tmpdir-prefix", inp,
             "--tmp-outdir-prefix", workdir,
             args.cwl,
