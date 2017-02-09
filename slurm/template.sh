@@ -43,7 +43,7 @@ trap cleanup EXIT
 --tumor_signpost_id $tumor_id \
 --ref_dict_signpost_id $ref_dict_id \
 --ref_fa_signpost_id $ref_fa_id \
---ref_fai_signpost_id $ref_fai_id \ 
+--ref_fai_signpost_id $ref_fai_id \
 --tumor_case_id $case_id \
 --aws_config $aws_config \
 --aws_shared_credentials $aws_creds \
