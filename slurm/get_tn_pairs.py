@@ -74,7 +74,7 @@ if __name__ == "__main__":
                     line = line.replace("XX_INPUT_S3_SECT_XX", columns[6])
 
                 if "XX_OUTPUT_S3_SECT_XX" in line:
-                    line = line.replace("XX_INPUT_S3_SECT_XX", args.output_s3section)
+                    line = line.replace("XX_OUTPUT_S3_SECT_XX", args.output_s3section)
 
                 if "XX_BASE_URL_XX" in line:
                     line = line.replace("XX_BASE_URL_XX", args.signpost_base_url)
