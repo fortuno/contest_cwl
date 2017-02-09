@@ -121,7 +121,7 @@ if __name__ == "__main__":
     cwl_failure = False
     if cwl_exit:
         cwl_failure = True
-        print "Has failed"
+        print "ContEst CWL run has failed"
 
     # upload logs to s3
     remote_path = args.s3dir + '/' + args.tumor_case_id + '/'
@@ -133,13 +133,18 @@ if __name__ == "__main__":
             "--tmpdir-prefix", inp,
             "--tmp-outdir-prefix", workdir,
             s3_cwl, 
-            '--aws_config', config, 
-            '--aws_shared_credentials', credentials, 
-            '--endpoint_json', endpoint_json, 
-            '--s3cfg_section', s3cfg_section, 
+            '--aws_config', args.aws_config, 
+            '--aws_shared_credentials', args.aws_shared_credentials, 
+            '--endpoint_json', args.endpoint_json, 
+            '--s3cfg_section', args.output_s3section, 
             '--s3uri', remote_path, 
             '--input', log_file]
     exit_code = run_command(cmd, logger)
+
+    cwl_failure = False
+    if exit_code:
+        cwl_failure = True
+        print "Uploading logging file has failed"
 
     cwl_end = time.time()
     cwl_elapsed = cwl_end - cwl_start
