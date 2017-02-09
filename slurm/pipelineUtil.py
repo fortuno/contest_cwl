@@ -6,7 +6,7 @@ import time
 import shutil
 
 def run_command(cmd, logger=None, shell_var=False):
-    """ Run a subprocess command """
+    """ Run command """
     timecmd = cmd
     timecmd.insert(0, '/usr/bin/time')
     timecmd.insert(1, '-v')
