@@ -34,7 +34,7 @@ function cleanup (){
 }
 
 sudo git clone -b slurm $repository
-sudo chown ubuntu:ubuntu -R contest-cwl
+sudo chown ubuntu:ubuntu -R contest_cwl
 
 trap cleanup EXIT
 
