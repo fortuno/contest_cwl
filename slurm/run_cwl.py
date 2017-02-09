@@ -25,8 +25,8 @@ def parseOptions():
     parser.set_defaults(level = logging.INFO)
 
     required = parser.add_argument_group("Required input parameters")
-    required.add_argument("--normal_signpost_id", required=True, help="signpost ID for normal bam file")
-    required.add_argument("--tumor_signpost_id", required=True, help="signpost ID for tumor bam file")
+    required.add_argument("--normal_s3_path", required=True, help="signpost ID for normal bam file")
+    required.add_argument("--tumor_s3_path", required=True, help="signpost ID for tumor bam file")
     required.add_argument("--ref_dict_signpost_id", required=True, help="signpost ID for reference dict file")
     required.add_argument("--ref_fa_signpost_id", required=True, help="signpost ID for reference file")
     required.add_argument("--ref_fai_signpost_id", required=True, help="signpost ID for reference index file")            
@@ -42,8 +42,9 @@ def parseOptions():
     
     optional = parser.add_argument_group("Optional input parameters")
     optional.add_argument("--lane_level_contamination", default="SAMPLE", help="contamination level calculation")
-    optional.add_argument("--population", default="ALL", help="population to obtain allele frequency")    
-    optional.add_argument("--s3section", default="cleversafe", help="path to output files")
+    optional.add_argument("--population", default="ALL", help="population to obtain allele frequency") 
+    optional.add_argument("--input_s3section", default="ceph", help="path to get input files")   
+    optional.add_argument("--output_s3section", default="cleversafe", help="path to output files")
     optional.add_argument("--basedir", default="/mnt/SCRATCH/", help="Base directory for computations")
 
     args = parser.parse_args() 
@@ -96,8 +97,8 @@ if __name__ == "__main__":
             "--tmpdir-prefix", inp,
             "--tmp-outdir-prefix", workdir,
             args.cwl,
-            "--tumor_bam_signpost_id", args.tumor_signpost_id,
-            "--normal_bam_signpost_id", args.normal_signpost_id,
+            "--tumor_bam_s3_path", args.tumor_s3_path,
+            "--normal_bam_s3_path", args.normal_s3_path,
             "--reference_fa_signpost_id", args.ref_fa_signpost_id,
             "--reference_fai_signpost_id", args.ref_fai_signpost_id,
             "--reference_dict_signpost_id", args.ref_dict_signpost_id,
@@ -111,7 +112,8 @@ if __name__ == "__main__":
             "--lane_level_contamination", args.lane_level_contamination,
             "--tumor_case_id", args.tumor_case_id,
             "--load_bucket", args.s3dir,
-            "--s3cfg_section", args.s3section]
+            "--s3cfg_input_section", args.input_s3section,
+            "--s3cfg_output_section", args.output_s3section]
     
     print "Running " + ' '.join(cmd)
     cwl_exit = pipelineUtil.run_command(cmd, logger)
@@ -123,9 +125,21 @@ if __name__ == "__main__":
 
     # upload logs to s3
     remote_path = args.s3dir + '/' + args.tumor_case_id + '/'
-    exit = pipelineUtil.upload_to_cleversafe(logger, args.basedir, cwltool_path, remote_path, log_file, args.aws_config, args.aws_shared_credentials, args.endpoint_json, args.s3section)
- 
-    #exit = pipelineUtil.upload_to_cleversafe(logger, cwl_tool_path, args.s3dir, log_file, args.s3section, "http://gdc-objstore.osdc.io/")
+    s3_cwl = args.basedir + '/contest_cwl/tools/aws_s3_put.cwl'
+
+    cmd = [cwltool_path,
+            "--debug",
+            "--custom-net", "host",
+            "--tmpdir-prefix", inp,
+            "--tmp-outdir-prefix", workdir,
+            s3_cwl, 
+            '--aws_config', config, 
+            '--aws_shared_credentials', credentials, 
+            '--endpoint_json', endpoint_json, 
+            '--s3cfg_section', s3cfg_section, 
+            '--s3uri', remote_path, 
+            '--input', log_file]
+    exit_code = run_command(cmd, logger)
 
     cwl_end = time.time()
     cwl_elapsed = cwl_end - cwl_start
