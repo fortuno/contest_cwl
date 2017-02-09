@@ -19,7 +19,8 @@ if __name__ == "__main__":
     required.add_argument("--signpost_base_url", default=None, help="path to output files", required=True)
     required.add_argument("--outdir", default="./", help="output directory for slurm scripts")  
     required.add_argument("--s3dir", default=None, help="path to output files", required=True)
-    required.add_argument("--thread_count", default=None, help="thread count", required=True)
+    required.add_argument("--output_s3section", default=None, help="S3 section for output files", required=True)
+    required.add_argument("--thread_count", default=None, help="thread count", required=True)    
     
     args = parser.parse_args()
 
@@ -34,10 +35,10 @@ if __name__ == "__main__":
             for line in temp:
 
                 if "XX_NORMAL_ID_XX" in line:
-                    line = line.replace("XX_NORMAL_ID_XX", columns[5])
+                    line = line.replace("XX_NORMAL_ID_XX", columns[7])
 
                 if "XX_TUMOR_ID_XX" in line:
-                    line = line.replace("XX_TUMOR_ID_XX", columns[9])
+                    line = line.replace("XX_TUMOR_ID_XX", columns[11])
 
                 if "XX_CASE_ID_XX" in line:
                     line = line.replace("XX_CASE_ID_XX", columns[2])
@@ -68,6 +69,12 @@ if __name__ == "__main__":
 
                 if "XX_S3DIR_XX" in line:
                     line = line.replace("XX_S3DIR_XX", args.s3dir)
+
+                if "XX_INPUT_S3_SECT_XX" in line:
+                    line = line.replace("XX_INPUT_S3_SECT_XX", columns[6])
+
+                if "XX_OUTPUT_S3_SECT_XX" in line:
+                    line = line.replace("XX_INPUT_S3_SECT_XX", args.output_s3section)
 
                 if "XX_BASE_URL_XX" in line:
                     line = line.replace("XX_BASE_URL_XX", args.signpost_base_url)
