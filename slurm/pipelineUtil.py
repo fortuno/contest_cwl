@@ -10,8 +10,6 @@ def run_command(cmd, logger=None, shell_var=False):
     timecmd = cmd
     timecmd.insert(0, '/usr/bin/time')
     timecmd.insert(1, '-v')
-    if logger != None:
-        logger.info('running cmd: %s' % timecmd)
 
     child = subprocess.Popen(timecmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=shell_var)
     stdoutdata, stderrdata = child.communicate()
@@ -30,12 +28,11 @@ def run_command(cmd, logger=None, shell_var=False):
 
     return exit_code
 
-def upload_to_cleversafe(logger, cwltool_path, remote_output, local_input, config, credentials, endpoint_json, s3cfg_section):
+def upload_to_cleversafe(cwltool_path, remote_output, local_input, config, credentials, endpoint_json, s3cfg_section):
     """ Upload a file to cleversafe to a folder """
 
     if (remote_output != "" and (os.path.isfile(local_input) or os.path.isdir(local_input))):
-        #cmd = ['s3cmd', '-c', config, 'sync', local_input, remote_output]
-        cmd = [cwltool_path, '../tools/aws_s3_put.cwl', '--aws_config', config, '--aws_shared_credentials', credentials, '--endpoint_json', endpoint_json, '--s3cfg_section', s3cfg_section, '--s3uri', remote_output, '--input', local_input]
+        cmd = [cwltool_path, '/home/ubuntu/contest_cwl/tools/aws_s3_put.cwl', '--aws_config', config, '--aws_shared_credentials', credentials, '--endpoint_json', endpoint_json, '--s3cfg_section', s3cfg_section, '--s3uri', remote_output, '--input', local_input]
         exit_code = run_command(cmd, logger)
     else:
         raise Exception("invalid input %s or output %s" %(local_input, remote_output))
