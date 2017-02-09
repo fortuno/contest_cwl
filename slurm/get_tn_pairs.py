@@ -19,7 +19,6 @@ if __name__ == "__main__":
     required.add_argument("--signpost_base_url", default=None, help="path to output files", required=True)
     required.add_argument("--outdir", default="./", help="output directory for slurm scripts")  
     required.add_argument("--s3dir", default=None, help="path to output files", required=True)
-    required.add_argument("--mem", default=None, help="mem for each node", required=True)
     required.add_argument("--thread_count", default=None, help="thread count", required=True)
     
     args = parser.parse_args()
@@ -72,9 +71,6 @@ if __name__ == "__main__":
 
                 if "XX_BASE_URL_XX" in line:
                     line = line.replace("XX_BASE_URL_XX", args.signpost_base_url)
-
-                if "XX_MEM_XX" in line:
-                    line = line.replace("XX_MEM_XX", str(args.mem))
 
                 if "XX_THREAD_COUNT_XX" in line:
                     line = line.replace("XX_THREAD_COUNT_XX", str(args.thread_count))
