@@ -38,7 +38,7 @@ sudo chown ubuntu:ubuntu -R contest_cwl
 
 trap cleanup EXIT
 
-/home/ubuntu/.virtualenvs/p2/bin/python contest-cwl/slurm/run_cwl.py \
+/home/ubuntu/.virtualenvs/p2/bin/python $wkdir/contest_cwl/slurm/run_cwl.py \
 --normal_signpost_id $normal_id \
 --tumor_signpost_id $tumor_id \
 --ref_dict_signpost_id $ref_dict_id \
@@ -53,4 +53,4 @@ trap cleanup EXIT
 --basedir $wkdir \
 --signpost_base_url $base_url \
 --s3dir $s3dir \
---cwl $wkdir/contest-cwl/workflows/contest-tool-workflow.cwl.yaml
+--cwl $wkdir/contest_cwl/workflows/contest-tool-workflow.cwl.yaml
