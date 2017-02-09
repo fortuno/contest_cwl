@@ -48,8 +48,8 @@ trap cleanup EXIT
 --aws_config $aws_config \
 --aws_shared_credentials $aws_creds \
 --endpoint_json $endpoint_json \
---popfile_json $popfile_json \
---popfile_tbi_json $popfile_tbi_json \
+--popfile_signpost_id $popfile_json \
+--popfile_tbi_signpost_id $popfile_tbi_json \
 --basedir $wkdir \
 --signpost_base_url $base_url \
 --s3dir $s3dir \
