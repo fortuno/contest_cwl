@@ -30,7 +30,7 @@ if __name__ == "__main__":
     with open(args.input_table, "r") as f:
         for input_line in f:
             columns = input_line.strip('\n').split('\t')
-            slurm = open(os.path.join(args.outdir, "contest.%s.%s.sh" %(columns[5], columns[9])), "w")
+            slurm = open(os.path.join(args.outdir, "contest.%s.sh" %(columns[2])), "w")
             temp = open("template.sh", "r")
             for line in temp:
 
