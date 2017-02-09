@@ -4,8 +4,6 @@ cwlVersion: v1.0
 
 class: CommandLineTool
 requirements:
-  - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/awscli:1
   - class: EnvVarRequirement
     envDef:
       - envName: "AWS_CONFIG_FILE"
@@ -123,4 +121,4 @@ arguments:
   - valueFrom: .
     position: 99
 
-baseCommand: [aws, s3, cp]
+baseCommand: [/home/ubuntu/.virtualenvs/p2/bin/aws, s3, cp]
