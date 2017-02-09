@@ -122,7 +122,7 @@ if __name__ == "__main__":
 
     # upload logs to s3
     remote_path = args.s3dir + '/' + args.tumor_case_id + '/'
-    exit = pipelineUtil.upload_to_cleversafe(logger, cwltool_path, remote_path, log_file, args.aws_config, args.aws_shared_credentials, args.endpoint_json, args.s3section)
+    exit = pipelineUtil.upload_to_cleversafe(logger, args.basedir, cwltool_path, remote_path, log_file, args.aws_config, args.aws_shared_credentials, args.endpoint_json, args.s3section)
  
     #exit = pipelineUtil.upload_to_cleversafe(logger, cwl_tool_path, args.s3dir, log_file, args.s3section, "http://gdc-objstore.osdc.io/")
 
