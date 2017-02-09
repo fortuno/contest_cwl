@@ -25,8 +25,8 @@ def parseOptions():
     parser.set_defaults(level = logging.INFO)
 
     required = parser.add_argument_group("Required input parameters")
-    required.add_argument("--normal_s3_path", required=True, help="signpost ID for normal bam file")
-    required.add_argument("--tumor_s3_path", required=True, help="signpost ID for tumor bam file")
+    required.add_argument("--normal_s3_path", required=True, help="Normal bam file path in S3")
+    required.add_argument("--tumor_s3_path", required=True, help="Tumor bam file path in S3")
     required.add_argument("--ref_dict_signpost_id", required=True, help="signpost ID for reference dict file")
     required.add_argument("--ref_fa_signpost_id", required=True, help="signpost ID for reference file")
     required.add_argument("--ref_fai_signpost_id", required=True, help="signpost ID for reference index file")            
@@ -78,8 +78,8 @@ if __name__ == "__main__":
     logger = setupLog.setup_logging(logging.INFO, str(args.tumor_case_id), log_file)
 
     #logging inputs
-    logger.info("normal_bam_id: %s" %(args.normal_signpost_id))
-    logger.info("tumor_bam_id: %s" %(args.tumor_signpost_id))
+    logger.info("normal_bam_path: %s" %(args.normal_s3_path))
+    logger.info("tumor_bam_path: %s" %(args.tumor_s3_path))
     logger.info("tumor_case_id: %s" %(args.tumor_case_id))
 
     #Get datetime
