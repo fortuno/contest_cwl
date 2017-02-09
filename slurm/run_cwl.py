@@ -139,7 +139,7 @@ if __name__ == "__main__":
             '--s3cfg_section', args.output_s3section, 
             '--s3uri', remote_path, 
             '--input', log_file]
-    exit_code = run_command(cmd, logger)
+    exit_code = pipelineUtil.run_command(cmd, logger)
 
     cwl_failure = False
     if exit_code:
