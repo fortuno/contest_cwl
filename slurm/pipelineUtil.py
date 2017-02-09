@@ -27,8 +27,8 @@ def run_command(cmd, logger=None, shell_var=False):
         logger.info('completed cmd: %s' % str(timecmd))
 
     return exit_code
-
-def upload_to_cleversafe(cwltool_path, basedir, remote_output, local_input, config, credentials, endpoint_json, s3cfg_section):
+    
+def upload_to_cleversafe(logger, basedir, cwltool_path, remote_output, local_input, config, credentials, endpoint_json, s3cfg_section):
     """ Upload a file to cleversafe to a folder """
 
     if (remote_output != "" and (os.path.isfile(local_input) or os.path.isdir(local_input))):
