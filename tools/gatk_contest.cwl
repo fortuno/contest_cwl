@@ -148,7 +148,7 @@ inputs:
 
   - id: isr
     type: string
-    default: INTERSECTION
+    default: null
     inputBinding:
       prefix: -isr
 
