@@ -13,6 +13,7 @@ ref_fai_id="XX_REF_FAI_ID_XX"
 ref_dict_id="XX_REF_DICT_ID_XX"
 popfile_json="XX_POPFILE_ID_XX"
 popfile_tbi_json="XX_POPFILE_TBI_ID_XX"
+population="XX_POPULATION_XX"
 case_id="XX_CASE_ID_XX"
 s3dir="XX_S3DIR_XX"
 base_url="XX_BASE_URL_XX"
@@ -51,6 +52,7 @@ trap cleanup EXIT
 --endpoint_json $endpoint_json \
 --popfile_signpost_id $popfile_json \
 --popfile_tbi_signpost_id $popfile_tbi_json \
+--population $population \
 --basedir $wkdir \
 --signpost_base_url $base_url \
 --s3dir $s3dir \
