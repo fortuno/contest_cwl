@@ -16,6 +16,7 @@ if __name__ == "__main__":
     required.add_argument("--endpoint_json", default=None, help="path to enpoint json file", required=True)     
     required.add_argument("--popfile_id", default=None, help="Signpost id to popfile json file", required=True) 
     required.add_argument("--popfile_tbi_id", default=None, help="Signpost id to popfile tbi json file", required=True)     
+    required.add_argument("--population", default=None, help="Select population", required=True)
     required.add_argument("--signpost_base_url", default=None, help="path to output files", required=True)
     required.add_argument("--outdir", default="./", help="output directory for slurm scripts")  
     required.add_argument("--s3dir", default=None, help="path to output files", required=True)
@@ -66,6 +67,9 @@ if __name__ == "__main__":
 
                 if "XX_POPFILE_TBI_ID_XX" in line:
                     line = line.replace("XX_POPFILE_TBI_ID_XX", args.popfile_tbi_id)
+
+                if "XX_POPULATION_XX" in line:
+                    line = line.replace("XX_POPULATION_XX", args.population)
 
                 if "XX_S3DIR_XX" in line:
                     line = line.replace("XX_S3DIR_XX", args.s3dir)
