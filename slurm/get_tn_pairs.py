@@ -36,10 +36,10 @@ if __name__ == "__main__":
             for line in temp:
 
                 if "XX_NORMAL_S3_PATH_XX" in line:
-                    line = line.replace("XX_NORMAL_S3_PATH_XX", columns[7])
+                    line = line.replace("XX_NORMAL_S3_PATH_XX", columns[11])
 
                 if "XX_TUMOR_S3_PATH_XX" in line:
-                    line = line.replace("XX_TUMOR_S3_PATH_XX", columns[11])
+                    line = line.replace("XX_TUMOR_S3_PATH_XX", columns[7])
 
                 if "XX_CASE_ID_XX" in line:
                     line = line.replace("XX_CASE_ID_XX", columns[2])
