@@ -293,7 +293,7 @@ steps:
         source: root_fasta/output
       - id: popfile
         source: root_popfile/output
-      - id: output
+      - id: outname
         source: tumor_case_id
         valueFrom: $(self + ".txt")
       - id: lane_level_contamination
