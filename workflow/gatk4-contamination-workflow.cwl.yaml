@@ -15,6 +15,8 @@ inputs:
     type: string
   - id: tumor_case_id
     type: string
+  - id: s3_load_bucket
+    type: string    
   - id: aws_config
     type: File
   - id: aws_shared_credentials
@@ -23,6 +25,8 @@ inputs:
     type: File
   - id: s3cfg_input_section
     type: string
+  - id: s3cfg_output_section
+    type: string
   - id: vcf_file
     type: File
     secondaryFiles:
@@ -30,9 +34,9 @@ inputs:
 
 outputs:
 
-  - id: contamination_output
+  - id: upload_contamination
     type: File
-    outputSource: gatk4_contamination/output
+    outputSource: upload_contamination/output
 
 steps:
 
@@ -99,5 +103,24 @@ steps:
       - id: outname
         source: tumor_case_id
         valueFrom: $(self + "_contamination.txt")
+    out:
+      - id: output
+
+
+  - id: upload_contamination
+    run: ../tools/aws_s3_put.cwl
+    in:
+      - id: input
+        source: gatk4_contamination/output
+      - id: aws_config
+        source: aws_config
+      - id: aws_shared_credentials
+        source: aws_shared_credentials
+      - id: endpoint_json
+        source: endpoint_json
+      - id: s3cfg_section
+        source: s3cfg_output_section
+      - id: s3uri
+        source: s3_load_bucket
     out:
       - id: output
