@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/cocleaning-tool
+    dockerPull: quay.io/ncigdc/cocleaning-tool:latest
   - class: InlineJavascriptRequirement
   - class: MultipleInputFeatureRequirement
 
@@ -13,16 +13,14 @@ class: CommandLineTool
 inputs:
  
   - id: genotypes
-    type: File
+    type: ['null', File]
     format: "edam:format_3016"
-    default: null
     inputBinding:
       prefix: --genotypes
 
   - id: INPUT
-    type: File
+    type: ['null', File]
     format: "edam:format_2572"
-    default: NULL
     inputBinding:
       prefix: -I
     secondaryFiles:
@@ -44,7 +42,7 @@ inputs:
     secondaryFiles:
       - ^.bai
 
-  - id: output
+  - id: outname
     type: string
     inputBinding:
       prefix: --out
@@ -52,7 +50,6 @@ inputs:
   - id: popfile
     type: File
     format: "edam:format_3016"
-    default: null
     inputBinding:
       prefix: --popfile
     secondaryFiles:
@@ -68,8 +65,7 @@ inputs:
       - ^.dict
 
   - id: base_report
-    type: string
-    default: null
+    type: ['null', string]
     inputBinding:
       prefix: --base_report
 
@@ -93,8 +89,7 @@ inputs:
         prefix: --lane_level_contamination
 
   - id: likelihood_file
-    type: string
-    default: null
+    type: ['null', File]
     inputBinding:
       prefix: --likelihood_file
 
@@ -117,8 +112,7 @@ inputs:
       prefix: --minimum_base_count
 
   - id: population
-    type: string   
-    default: null  
+    type: ['null', string]
     inputBinding:
       prefix: --population
 
@@ -130,7 +124,7 @@ inputs:
 
   - id: sample_name
     type: string
-    default: null
+    default: "null"
     inputBinding:
       prefix: --sample_name
 
@@ -142,27 +136,35 @@ inputs:
 
   - id: verify_sample
     type: boolean
-    default: false  
+    default: false
     inputBinding:
       prefix: --verify_sample
 
   - id: isr
-    type: string
-    default: null
+    type: ['null', string]
     inputBinding:
       prefix: -isr
 
   - id: interval
-    type: string
-    default: null
+    type: ['null', string]
     inputBinding:
       prefix: -L
+
+  - id: min_genotype_depth
+    type: ['null', int]
+    inputBinding:
+      prefix: --min_genotype_depth
+
+  - id: min_site_depth
+    type: ['null', int]
+    inputBinding:
+      prefix: --min_site_depth
 
 outputs:
   - id: output
     type: File
     outputBinding:
-      glob: $(inputs.output)
+      glob: $(inputs.outname)
 
-baseCommand: [java, -jar, /usr/local/bin/GenomeAnalysisTK.jar, -T, ContEst]
+baseCommand: [java, -XX:ParallelGCThreads=8, -jar, /usr/local/bin/GenomeAnalysisTK.jar, -T, ContEst]
 
