@@ -1,0 +1,23 @@
+{
+    "bam_s3_path": "XX_TUMOR_S3_PATH_XX",
+    "tumor_case_id": "XX_TUMOR_UUID_XX",
+    "s3_load_bucket": "XX_LOAD_BUCKET_XX",
+    "s3cfg_input_section": "ceph",
+    "s3cfg_output_section": "cleversafe",
+    "vcf_file": {
+        "class": "File", 
+        "location": "/mnt/reference/hg38_population_allele_frequency_hapmap_3.3.vcf.gz"
+    },
+    "aws_config": {
+        "class": "File", 
+        "location": "/home/ubuntu/.aws/config"
+    },
+    "aws_shared_credentials": {
+        "class": "File", 
+        "location": "/home/ubuntu/.aws/credentials"
+    },
+    "endpoint_json": {
+        "class": "File", 
+        "location": "/home/ubuntu/.aws/endpoint.json"
+    } 
+}
