@@ -1,0 +1,103 @@
+#!/usr/bin/env cwl-runner
+
+cwlVersion: "v1.0"
+
+class: Workflow
+
+requirements:
+  - class: ScatterFeatureRequirement
+  - class: StepInputExpressionRequirement
+  - class: InlineJavascriptRequirement
+
+inputs:
+
+  - id: bam_s3_path
+    type: string
+  - id: tumor_case_id
+    type: string
+  - id: aws_config
+    type: File
+  - id: aws_shared_credentials
+    type: File
+  - id: endpoint_json
+    type: File
+  - id: s3cfg_input_section
+    type: string
+  - id: vcf_file
+    type: File
+    secondaryFiles:
+      - ".tbi"
+
+outputs:
+
+  - id: contamination_output
+    type: File
+    outputSource: gatk4_contamination/output
+
+steps:
+
+  - id: extract_bam
+    run: ../tools/aws_s3_get.cwl
+    in:
+      - id: aws_config
+        source: aws_config
+      - id: aws_shared_credentials
+        source: aws_shared_credentials
+      - id: endpoint_json
+        source: endpoint_json
+      - id: s3url
+        source: bam_s3_path
+      - id: s3cfg_section
+        source: s3cfg_input_section
+    out:
+      - id: output
+
+  - id: extract_bai
+    run: ../tools/aws_s3_get_bai.cwl
+    in:
+      - id: aws_config
+        source: aws_config
+      - id: aws_shared_credentials
+        source: aws_shared_credentials
+      - id: endpoint_json
+        source: endpoint_json
+      - id: s3url
+        source: bam_s3_path
+      - id: s3cfg_section
+        source: s3cfg_input_section
+    out:
+      - id: output
+
+  - id: root_bam
+    run: ../tools/root_bam.cwl
+    in:
+      - id: bam
+        source: extract_bam/output
+      - id: bam_index
+        source: extract_bai/output
+    out:
+      - id: output
+
+  - id: gatk4_pileup
+    run: ../tools/gatk4-getpileup-summaries.cwl
+    in:
+      - id: tumor_bam
+        source: root_bam/output
+      - id: vcf_file
+        source: vcf_file
+      - id: outname
+        source: tumor_case_id
+        valueFrom: $(self + "_pileup.txt")
+    out:
+      - id: output
+
+  - id: gatk4_contamination
+    run: ../tools/gatk4-calculate-contamination.cwl
+    in:
+      - id: pileup_summary
+        source: gatk4_pileup/output
+      - id: outname
+        source: tumor_case_id
+        valueFrom: $(self + "_contamination.txt")
+    out:
+      - id: output
