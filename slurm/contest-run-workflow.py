@@ -121,7 +121,10 @@ def run_build_json_input(args):
 def run_cwl(args, json_file):
 
     output_uuid = args.output_uuid
-    #inputs = utils.pipeline.load_json(args.json_template)
+    case_id = args.case_id
+    tumor_id = args.tumor_id
+    cwl_version = args.cwl_version
+    docker_version = [args.docker_version]
 
     #create directory structure
     casedir = tempfile.mkdtemp(prefix="case_%s" % output_uuid, dir=args.basedir)
@@ -241,6 +244,8 @@ def get_args():
     p_input.add_argument('--basedir', required = True)
     p_input.add_argument('--cwl_runner',required = True) 
     p_input.add_argument('--db_config',required = True) 
+    p_input.add_argument('--cwl_version', default="1.0.20170828135420",required = False) 
+    p_input.add_argument('--docker_version', default="broadinstitute/gatk:latest",required = False) 
 
     return parser.parse_args() 
 
