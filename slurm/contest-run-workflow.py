@@ -67,11 +67,11 @@ def run_build_slurm_scripts(args):
                     newline = line.replace('XX_CORE_COUNT_XX', str(resource_core_count))
                     f_open.write(newline)
                 elif 'XX_MEM_XX' in line:
-                    memory_mebibytes = math.ceil(resource_memory_bytes / 1024 / 1024)
+                    memory_mebibytes = int(math.ceil(resource_memory_bytes / 1024 / 1024))
                     newline = line.replace('XX_MEM_XX', str(memory_mebibytes))
                     f_open.write(newline)
                 elif 'XX_DISK_GB_XX' in line:
-                    disk_mebibytes = math.ceil(resource_disk_bytes / 1024 / 1024)
+                    disk_mebibytes = int(math.ceil(resource_disk_bytes / 1024 / 1024))
                     newline = line.replace('XX_DISK_GB_XX', str(disk_mebibytes))
                     f_open.write(newline)
                 elif 'XX_SCRATCH_DIR_XX' in line:
@@ -197,14 +197,14 @@ def run_cwl(args, json_file):
     
     # Set metrics table
     logger.info("Updating metrics")
-    #postgres.utils.add_pipeline_metrics(engine, output_id, [args.input_id], args.input_table, download_time,
-    #                                    upload_time, args.thread_count, cwl_elapsed,
-    #                                    time_metrics['system_time'],
-    #                                    time_metrics['user_time'],
-    #                                    time_metrics['wall_clock'],
-    #                                    time_metrics['percent_of_cpu'],
-    #                                    time_metrics['maximum_resident_set_size'],
-    #                                    status, metricsclass)
+    postgres.utils.add_pipeline_metrics(engine, output_id, [args.input_id], args.input_table, download_time,
+                                        upload_time, args.thread_count, cwl_elapsed,
+                                        time_metrics['system_time'],
+                                        time_metrics['user_time'],
+                                        time_metrics['wall_clock'],
+                                        time_metrics['percent_of_cpu'],
+                                        time_metrics['maximum_resident_set_size'],
+                                        status, metricsclass)
     
     # Remove job directories, upload final log file
     logger.info("Uploading main log file")
