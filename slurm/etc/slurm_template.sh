@@ -38,16 +38,16 @@ function main()
     cd ${job_dir}
     
     sudo git clone -b slurm ${repository}
-    sudo chown ubuntu:ubuntu -R ${repository}
+    sudo chown ubuntu:ubuntu -R contest_cwl
 
     trap cleanup EXIT
     
     local load_bucket=${S3_LOAD_BUCKET}   
-    local json_template=${job_dir}/${repository}/slurm/etc/job_template.json
-    local cwl_runner=${job_dir}/${repository}/workflow/${CWL_WORKFLOW}
+    local json_template=${job_dir}/contest_cwl/slurm/etc/job_template.json
+    local cwl_runner=${job_dir}/contest_cwl/workflow/${CWL_WORKFLOW}
     local db_config=/mnt/reference/fortuno_postgres_config
 
-    /home/ubuntu/.virtualenvs/p2/bin/python ${repository}/slurm/contest-run-workflow.py run_cwl \
+    /home/ubuntu/.virtualenvs/p2/bin/python contest_cwl/slurm/contest-run-workflow.py run_cwl \
     --case_id ${CASE_ID} \
     --tumor_id ${TUMOR_INPUT_GDC_ID} \
     --tumor_s3url ${TUMOR_INPUT_S3URL} \
