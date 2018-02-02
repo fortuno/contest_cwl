@@ -21,12 +21,6 @@ inputs:
 
   - id: aws_shared_credentials
     type: File
-  
-  - id: endpoint_json
-    type: File
-    inputBinding:
-      loadContents: true
-      valueFrom: null
 
   - id: input
     type: File
@@ -46,8 +40,13 @@ outputs:
 arguments:
   - valueFrom: |
       ${
-      var endpoint_json = JSON.parse(inputs.endpoint_json.contents);
-      var endpoint_url = String(endpoint_json[inputs.s3cfg_section]);
+
+      if (include(inputs.s3cfg_section,"ceph")) {
+        var endpoint_url = "http://gdc-cephb-objstore.osdc.io/";
+      } else {
+        var endpoint_url = "http://gdc-accessors.osdc.io/";
+      } 
+      
       var endpoint = endpoint_url.replace("http://","");
       var dig_cmd = ["dig", "+short", endpoint, "|", "grep", "-E", "'[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'", "|", "shuf", "-n1"];
       var shell_dig = "http://" + "`" + dig_cmd.join(' ') + "`";

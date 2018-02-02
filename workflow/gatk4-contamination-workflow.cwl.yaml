@@ -21,8 +21,6 @@ inputs:
     type: File
   - id: aws_shared_credentials
     type: File
-  - id: endpoint_json
-    type: File
   - id: s3cfg_input_section
     type: string
   - id: s3cfg_output_section
@@ -43,16 +41,12 @@ steps:
   - id: extract_bam
     run: ../tools/aws_s3_get.cwl
     in:
-      - id: aws_config
+      - id: aws_config_file
         source: aws_config
-      - id: aws_shared_credentials
+      - id: aws_shared_credentials_file
         source: aws_shared_credentials
-      - id: endpoint_json
-        source: endpoint_json
-      - id: s3url
+      - id: s3uri
         source: bam_s3_path
-      - id: s3cfg_section
-        source: s3cfg_input_section
     out:
       - id: output
 
@@ -116,8 +110,6 @@ steps:
         source: aws_config
       - id: aws_shared_credentials
         source: aws_shared_credentials
-      - id: endpoint_json
-        source: endpoint_json
       - id: s3cfg_section
         source: s3cfg_output_section
       - id: s3uri
