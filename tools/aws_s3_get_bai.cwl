@@ -9,7 +9,7 @@ requirements:
   - class: EnvVarRequirement
     envDef:
       - envName: "AWS_CONFIG_FILE"
-        envValue: $(inputs.aws_config.path)
+        envValue: $(inputs.aws_config_file.path)
       - envName: "AWS_SHARED_CREDENTIALS_FILE"
         envValue: $(inputs.aws_shared_credentials.path)
   - class: InlineJavascriptRequirement
