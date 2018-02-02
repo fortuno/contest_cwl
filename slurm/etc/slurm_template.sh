@@ -31,12 +31,12 @@ function main()
     local scratch_dir=${SCRATCH_DIR}
     local repository=${REPO_HASH}
 
-    job_dir=`sudo mktemp -d pindel.XXXXXXXXXX -p $scratch_dir`
+    job_dir=`sudo mktemp -d contamination.XXXXXXXXXX -p $scratch_dir`
     sudo chown ubuntu:ubuntu ${job_dir}
 
     cd ${job_dir}
     
-    sudo git clone -b feat/slurm ${repository}
+    sudo git clone -b slurm ${repository}
     sudo chown ubuntu:ubuntu -R ${repository}
 
     trap cleanup EXIT
