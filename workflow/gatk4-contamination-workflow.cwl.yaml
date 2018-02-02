@@ -34,7 +34,7 @@ inputs:
 
 outputs:
 
-  - id: upload_contamination
+  - id: contamination_output
     type: File
     outputSource: upload_contamination/output
 
