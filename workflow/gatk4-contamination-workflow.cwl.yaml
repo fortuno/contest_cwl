@@ -21,8 +21,6 @@ inputs:
     type: File
   - id: aws_shared_credentials
     type: File
-  - id: s3cfg_input_section
-    type: string
   - id: s3cfg_output_section
     type: string
   - id: vcf_file
@@ -53,16 +51,12 @@ steps:
   - id: extract_bai
     run: ../tools/aws_s3_get_bai.cwl
     in:
-      - id: aws_config
+      - id: aws_config_file
         source: aws_config
-      - id: aws_shared_credentials
+      - id: aws_shared_credentials_file
         source: aws_shared_credentials
-      - id: endpoint_json
-        source: endpoint_json
       - id: s3url
         source: bam_s3_path
-      - id: s3cfg_section
-        source: s3cfg_input_section
     out:
       - id: output
 
