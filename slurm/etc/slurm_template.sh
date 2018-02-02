@@ -15,6 +15,7 @@ CWL_WORKFLOW="XX_CWL_WORKFLOW_XX"
 CASE_ID="XX_CASE_ID_XX"
 TUMOR_INPUT_GDC_ID="XX_TUMOR_BAM_GDC_ID_XX"
 TUMOR_INPUT_S3URL="XX_TUMOR_BAM_S3URL_XX"
+PROJECT="XX_GDC_PROJECT_XX"
 
 S3_LOAD_BUCKET="XX_LOAD_BUCKET_XX"
 OUTPUT_UUID="XX_UUID_XX"
@@ -55,7 +56,8 @@ function main()
     --json_template ${json_template} \
     --basedir ${job_dir} \
     --cwl_runner ${cwl_runner} \
-    --db_config ${db_config} 
+    --db_config ${db_config} \
+    --project ${PROJECT}
     
 }
 

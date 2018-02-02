@@ -75,7 +75,8 @@ def update_record_status(engine, table, met, logger=None):
 
       if record:
           record.uuid              = met.uuid
-          record.tumor_bam_uuid    = met.tumor_bam_uuid        
+          record.tumor_bam_uuid    = met.tumor_bam_uuid 
+          record.project           = met.project        
           record.status            = met.status
           record.s3_url            = met.s3_url
           record.datetime_start    = met.datetime_start
@@ -134,12 +135,13 @@ def update_record_metrics(engine, table, met, logger=None):
 
     return record
 
-def add_pipeline_status(engine, uuid, tumor_bam_uuid, case_id,
+def add_pipeline_status(engine, project, uuid, tumor_bam_uuid, case_id,
                         status, s3_url, datetime_start, datetime_end,
                         md5, file_size, hostname, cwl_version, docker_version, statusclass, logger=None):
     """ add provided status to database """
     met = statusclass(uuid              = uuid,
                       tumor_bam_uuid    = tumor_bam_uuid,
+                      project           = project,
                       case_id           = case_id,
                       status            = status,
                       s3_url            = s3_url,
@@ -187,7 +189,7 @@ def add_pipeline_metrics(engine, uuid, case_id, download_time,
     if not record:
       add_metrics(engine, met)
 
-def set_download_error(exit_code, logger, engine,
+def set_download_error(exit_code, logger, engine, project,
                        uuid, tumor_bam_uuid, case_id,
                        datetime_start, datetime_end,
                        hostname, cwl_version, docker_version,
@@ -200,7 +202,7 @@ def set_download_error(exit_code, logger, engine,
     if exit_code != 0:
         logger.info("Input file download error")
         status = "DOWNLOAD_FAILURE"
-        add_pipeline_status(engine, uuid, tumor_bam_uuid, case_id,
+        add_pipeline_status(engine, project, uuid, tumor_bam_uuid, case_id,
                             status, s3_url, datetime_start, datetime_end,
                             md5, file_size, hostname, cwl_version, docker_version, statusclass)
         add_pipeline_metrics(engine, uuid, case_id, download_time, float(0),
@@ -209,7 +211,7 @@ def set_download_error(exit_code, logger, engine,
     else:
         logger.info("Md5 unmatch error")
         status = "UNMATCHED_MD5"
-        add_pipeline_status(engine, uuid, tumor_bam_uuid, case_id,
+        add_pipeline_status(engine, project, uuid, tumor_bam_uuid, case_id,
                             status, s3_url, datetime_start, datetime_end,
                             md5, file_size, hostname, cwl_version, docker_version, statusclass)
         add_pipeline_metrics(engine, uuid, case_id, download_time, float(0),

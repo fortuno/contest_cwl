@@ -10,7 +10,7 @@ class StatusTypeMixin(object):
     id               = Column(Integer, primary_key=True)
     uuid             = Column(String)
     tumor_bam_uuid   = Column(String)    
-    uuid             = Column(String)    
+    project          = Column(String)    
     case_id          = Column(String) 
     status           = Column(String)
     s3_url           = Column(String)

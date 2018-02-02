@@ -46,6 +46,7 @@ def run_build_slurm_scripts(args):
         case_id = case.case_id
         tumor_case   = case.tumor_bam_uuid
         tumor_s3url  = case.tumor_bam_location
+        project = case.project
     
         job_slurm = os.path.join(slurm_script_path, output_uuid + ".sh")
         f_open = open(job_slurm, 'w')
@@ -85,7 +86,10 @@ def run_build_slurm_scripts(args):
                     f_open.write(newline)   
                 elif 'XX_UUID_XX' in line:
                     newline = line.replace('XX_UUID_XX', output_uuid)
-                    f_open.write(newline)                                                         
+                    f_open.write(newline)    
+                elif 'XX_GDC_PROJECT_XX' in line:
+                    newline = line.replace('XX_GDC_PROJECT_XX', output_uuid)
+                    f_open.write(newline)                                                                          
                 else:
                     f_open.write(line)
         f_open.close()
@@ -125,6 +129,7 @@ def run_cwl(args, json_file):
     tumor_id = args.tumor_id
     cwl_version = args.cwl_version
     docker_version = [args.docker_version]
+    project = args.project
 
     #create directory structure
     casedir = tempfile.mkdtemp(prefix="case_%s" % output_uuid, dir=args.basedir)
@@ -191,7 +196,7 @@ def run_cwl(args, json_file):
     
     # Set status table
     logger.info("Updating status: %d" % cwl_exit)
-    postgres.utils.add_pipeline_status(engine, output_uuid, tumor_id, case_id, status, 
+    postgres.utils.add_pipeline_status(engine, project, output_uuid, tumor_id, case_id, status, 
                                        loc, datetime_start, datetime_end, md5,   
                                        file_size, hostname, cwl_version, docker_version, statusclass, logger)
     
@@ -244,6 +249,7 @@ def get_args():
     p_input.add_argument('--basedir', required = True)
     p_input.add_argument('--cwl_runner',required = True) 
     p_input.add_argument('--db_config',required = True) 
+    p_input.add_argument('--project',required = True)     
     p_input.add_argument('--cwl_version', default="1.0.20170828135420",required = False) 
     p_input.add_argument('--docker_version', default="broadinstitute/gatk:latest",required = False) 
 
