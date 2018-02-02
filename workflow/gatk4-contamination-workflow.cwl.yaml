@@ -55,7 +55,7 @@ steps:
         source: aws_config
       - id: aws_shared_credentials_file
         source: aws_shared_credentials
-      - id: s3url
+      - id: s3uri
         source: bam_s3_path
     out:
       - id: output
