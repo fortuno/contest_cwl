@@ -98,7 +98,7 @@ def run_build_slurm_scripts(args):
 def run_build_json_input(args):
 
     tumor_url      = args.tumor_s3url
-    tumor_uuid     = args.tumor_uuid
+    tumor_uuid     = args.tumor_id
     output_uuid    = args.output_uuid
     s3_load_bucket = args.s3_load_bucket
     job_json       = args.json_input
