@@ -101,7 +101,7 @@ def run_build_json_input(args):
     tumor_uuid     = args.tumor_id
     output_uuid    = args.output_uuid
     s3_load_bucket = args.s3_load_bucket
-    job_json       = args.json_input
+    job_json = os.path.join(args.basedir, output_uuid + '.json')
 
     output_file = output_uuid + '_contamination.txt'
     f_open = open(job_json, 'w')
