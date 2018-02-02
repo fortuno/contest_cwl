@@ -88,7 +88,7 @@ def run_build_slurm_scripts(args):
                     newline = line.replace('XX_UUID_XX', output_uuid)
                     f_open.write(newline)    
                 elif 'XX_GDC_PROJECT_XX' in line:
-                    newline = line.replace('XX_GDC_PROJECT_XX', output_uuid)
+                    newline = line.replace('XX_GDC_PROJECT_XX', project)
                     f_open.write(newline)                                                                          
                 else:
                     f_open.write(line)
