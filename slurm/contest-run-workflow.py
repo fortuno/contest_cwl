@@ -110,8 +110,8 @@ def run_build_json_input(args):
             if 'XX_TUMOR_S3_PATH_XX' in line:
                 newline = line.replace('XX_TUMOR_S3_PATH_XX', tumor_url)
                 f_open.write(newline)
-            elif 'XX_TUMOR_UUID_XX' in line:
-                newline = line.replace('XX_TUMOR_UUID_XX', tumor_uuid)
+            elif 'XX_OUTPUT_UUID_XX' in line:
+                newline = line.replace('XX_OUTPUT_UUID_XX', output_uuid)
                 f_open.write(newline)                
             elif 'XX_LOAD_BUCKET_XX' in line:
                 newline = line.replace('XX_LOAD_BUCKET_XX', s3_load_bucket)

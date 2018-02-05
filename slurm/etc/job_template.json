@@ -1,6 +1,6 @@
 {
     "bam_s3_path": "XX_TUMOR_S3_PATH_XX",
-    "tumor_case_id": "XX_TUMOR_UUID_XX",
+    "output_uuid": "XX_OUTPUT_UUID_XX",
     "s3_load_bucket": "XX_LOAD_BUCKET_XX",
     "s3cfg_output_section": "cleversafe",
     "vcf_file": {

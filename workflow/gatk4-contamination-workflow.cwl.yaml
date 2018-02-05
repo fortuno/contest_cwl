@@ -13,7 +13,7 @@ inputs:
 
   - id: bam_s3_path
     type: string
-  - id: tumor_case_id
+  - id: output_uuid
     type: string
   - id: s3_load_bucket
     type: string    
@@ -78,7 +78,7 @@ steps:
       - id: vcf_file
         source: vcf_file
       - id: outname
-        source: tumor_case_id
+        source: output_uuid
         valueFrom: $(self + "_pileup.txt")
     out:
       - id: output
@@ -89,7 +89,7 @@ steps:
       - id: pileup_summary
         source: gatk4_pileup/output
       - id: outname
-        source: tumor_case_id
+        source: output_uuid
         valueFrom: $(self + "_contamination.txt")
     out:
       - id: output
