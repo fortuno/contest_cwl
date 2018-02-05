@@ -5,7 +5,7 @@
     "s3cfg_output_section": "cleversafe",
     "vcf_file": {
         "class": "File", 
-        "location": "/mnt/reference/hg38_population_allele_frequency_hapmap_3.3.vcf.gz"
+        "location": "/mnt/reference/hg38_population_allele_frequency_hapmap_3.3_modified.vcf.gz"
     },
     "aws_config": {
         "class": "File", 
