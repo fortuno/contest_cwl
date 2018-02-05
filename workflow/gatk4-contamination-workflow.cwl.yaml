@@ -32,7 +32,7 @@ outputs:
 
   - id: contamination_output
     type: File
-    outputSource: upload_contamination/output
+    outputSource: gatk4_contamination/output
 
 steps:
 
