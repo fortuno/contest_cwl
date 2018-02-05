@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: broadinstitute/gatk:latest
+    dockerPull: broadinstitute/gatk:4.0.0.0
   - class: InlineJavascriptRequirement
   - class: MultipleInputFeatureRequirement
 
@@ -29,4 +29,4 @@ outputs:
     outputBinding:
       glob: $(inputs.outname)
 
-baseCommand: [/gatk/gatk-launch, --javaOptions, -Xmx4g, CalculateContamination]
+baseCommand: [/gatk/gatk, --java-options, "-Xmx4g -XX:ParallelGCThreads=8", CalculateContamination]
