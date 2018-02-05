@@ -167,17 +167,27 @@ def run_cwl(args, json_file, statusclass, metricsclass):
            args.cwl_runner,
            json_file]
     cwl_exit = utils.pipeline.run_command(cmd, logger)
-    cwl_failure = False
-    if cwl_exit:
-        cwl_failure = True
+
+    # Get status info
+    logger.info("Get status/metrics info")
+    upload_dir_location = args.s3_load_bucket
+    upload_file_location = os.path.join(upload_dir_location, output_file)
+    status, loc = postgres.status.get_status(0, cwl_exit, upload_file_location, upload_dir_location, logger)
+
+    # Report fail
+    if cwl_exit != 0:
+
+        # Update status table
+        status, loc = postgres.status.get_status(0, cwl_exit, '', '', logger)
+        engine = postgres.utils.get_db_engine(pg_file)
+        postgres.utils.add_pipeline_status(engine, project, output_uuid, tumor_id, case_id, status, 
+                                          loc, datetime_start, str(datetime.datetime.now()), '',   
+                                          '', hostname, cwl_version, docker_version, statusclass)
 
     # Get output md5sum
     output_full_path = os.path.join(workdir, output_file)
     md5 = utils.pipeline.get_md5(output_full_path)
     file_size = utils.pipeline.get_file_size(output_full_path)
-
-    # Establish connection with database
-    engine = postgres.utils.get_db_engine(args.db_config)
 
     # Calculate times
     cwl_end = time.time()
@@ -185,11 +195,8 @@ def run_cwl(args, json_file, statusclass, metricsclass):
     datetime_end = str(datetime.datetime.now())
     logger.info("datetime_end: %s" % (datetime_end))
 
-    # Get status info
-    logger.info("Get status/metrics info")
-    upload_dir_location = args.s3_load_bucket
-    upload_file_location = os.path.join(upload_dir_location, output_file)
-    status, loc = postgres.status.get_status(0, cwl_exit, upload_file_location, upload_dir_location, logger)
+    # Establish connection with database
+    engine = postgres.utils.get_db_engine(args.db_config)
     
     # Get metrics info
     time_metrics = utils.pipeline.get_time_metrics(log_file)
@@ -202,15 +209,15 @@ def run_cwl(args, json_file, statusclass, metricsclass):
     
     # Set metrics table
     logger.info("Updating metrics")
-    postgres.utils.add_pipeline_metrics(engine, output_id, [args.input_id], args.input_table, download_time,
-                                        upload_time, args.thread_count, cwl_elapsed,
+    postgres.utils.add_pipeline_metrics(engine, output_id, case_id, '',
+                                        upload_time, args.threads, cwl_elapsed,
                                         time_metrics['system_time'],
                                         time_metrics['user_time'],
                                         time_metrics['wall_clock'],
                                         time_metrics['percent_of_cpu'],
                                         time_metrics['maximum_resident_set_size'],
                                         status, metricsclass)
-    
+
     # Remove job directories, upload final log file
     logger.info("Uploading main log file")
     #utils.s3.aws_s3_put(logger, upload_dir_location + '/' + os.path.basename(log_file), log_file, args.s3_profile, args.s3_endpoint, recursive=False)
@@ -249,9 +256,10 @@ def get_args():
     p_input.add_argument('--basedir', required = True)
     p_input.add_argument('--cwl_runner',required = True) 
     p_input.add_argument('--db_config',required = True) 
-    p_input.add_argument('--project',required = True)     
+    p_input.add_argument('--project',required = True)
+    p_input.add_argument('--threads', required = True) 
+    p_input.add_argument('--docker_version', default="broadinstitute/gatk:4.0.0.0",required = False) 
     p_input.add_argument('--cwl_version', default="1.0.20170828135420",required = False) 
-    p_input.add_argument('--docker_version', default="broadinstitute/gatk:latest",required = False) 
 
     return parser.parse_args() 
 
