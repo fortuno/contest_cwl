@@ -57,7 +57,8 @@ function main()
     --basedir ${job_dir} \
     --cwl_runner ${cwl_runner} \
     --db_config ${db_config} \
-    --project ${PROJECT}
+    --project ${PROJECT} \
+    --threads ${NTHREADS}
     
 }
 
