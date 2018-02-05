@@ -22,14 +22,21 @@ inputs:
   - id: aws_shared_credentials
     type: File
 
-  - id: input
-    type: File
-
   - id: s3cfg_section
     type: string
-    
+    inputBinding:
+      position: 1
+      prefix: --profile
+
+  - id: input
+    type: File
+    inputBinding:
+      position: 98
+
   - id: s3uri
     type: string
+    inputBinding:
+      position: 99
 
 outputs:
   - id: output
@@ -40,6 +47,9 @@ outputs:
 arguments:
   - valueFrom: |
       ${
+      function include(arr,obj) {
+        return (arr.indexOf(obj) != -1)
+      }
 
       if (include(inputs.s3cfg_section,"ceph")) {
         var endpoint_url = "http://gdc-cephb-objstore.osdc.io/";
@@ -47,15 +57,11 @@ arguments:
         var endpoint_url = "http://gdc-accessors.osdc.io/";
       } 
       
-      var endpoint = endpoint_url.replace("http://","");
-      var dig_cmd = ["dig", "+short", endpoint, "|", "grep", "-E", "'[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'", "|", "shuf", "-n1"];
-      var shell_dig = "http://" + "`" + dig_cmd.join(' ') + "`";
-      var cmd = ["aws", "s3", "cp", "--profile", inputs.s3cfg_section, "--endpoint-url", shell_dig, inputs.input.path, inputs.s3uri];
-      var shell_cmd = cmd.join(' ');
-      return shell_cmd
+      return endpoint_url
       }
+    prefix: --endpoint-url
     position: 0
 
 stdout: "output"
     
-baseCommand: [bash, -c]
+baseCommand: [aws, s3, cp]
