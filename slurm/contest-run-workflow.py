@@ -122,7 +122,7 @@ def run_build_json_input(args):
 
     return job_json
 
-def run_cwl(args, json_file):
+def run_cwl(args, json_file, statusclass, metricsclass):
 
     output_uuid = args.output_uuid
     case_id = args.case_id
@@ -275,4 +275,4 @@ if __name__ == '__main__':
         class TableMetrics(postgres.mixins.MetricsTypeMixin, postgres.utils.Base):
             __tablename__ = 'contest_cwl_metrics'
         
-        run_cwl(args, json_file)
+        run_cwl(args, json_file, TableStatus, TableMetrics)
