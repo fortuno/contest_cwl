@@ -209,8 +209,8 @@ def run_cwl(args, json_file, statusclass, metricsclass):
     
     # Set metrics table
     logger.info("Updating metrics")
-    postgres.utils.add_pipeline_metrics(engine, output_uuid, case_id, '',
-                                        '', args.threads, cwl_elapsed,
+    postgres.utils.add_pipeline_metrics(engine, output_uuid, case_id, 0,
+                                        0, args.threads, cwl_elapsed,
                                         time_metrics['system_time'],
                                         time_metrics['user_time'],
                                         time_metrics['wall_clock'],
