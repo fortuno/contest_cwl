@@ -209,13 +209,14 @@ def run_cwl(args, json_file, statusclass, metricsclass):
     
     # Set metrics table
     logger.info("Updating metrics")
+    print time_metrics
     postgres.utils.add_pipeline_metrics(engine, output_uuid, case_id, 0,
                                         0, args.threads, cwl_elapsed,
-                                        time_metrics['system_time'],
-                                        time_metrics['user_time'],
-                                        time_metrics['wall_clock'],
-                                        time_metrics['percent_of_cpu'],
-                                        time_metrics['maximum_resident_set_size'],
+                                        time_metrics['system_time'][0],
+                                        time_metrics['user_time'][0],
+                                        time_metrics['wall_clock'][0],
+                                        time_metrics['percent_of_cpu'][0],
+                                        time_metrics['maximum_resident_set_size'][0],
                                         status, metricsclass)
 
     # Remove job directories, upload final log file
