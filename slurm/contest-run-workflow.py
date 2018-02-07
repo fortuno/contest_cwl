@@ -184,6 +184,11 @@ def run_cwl(args, json_file, statusclass, metricsclass):
                                           loc, datetime_start, str(datetime.datetime.now()), '',   
                                           '', hostname, cwl_version, docker_version, statusclass)
 
+        # Upload log file to debug fail
+        logger.info("Uploading failing log file")
+        utils.s3.aws_s3_put(logger, os.path.join(upload_dir_location, os.path.basename(log_file)), log_file, 'cleversafe', 'http://gdc-accessors.osdc.io/', recursive=False)
+ 
+
     # Get output md5sum
     output_full_path = os.path.join(workdir, output_file)
     md5 = utils.pipeline.get_md5(output_full_path)
