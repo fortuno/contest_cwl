@@ -179,7 +179,7 @@ def run_cwl(args, json_file, statusclass, metricsclass):
 
         # Update status table
         status, loc = postgres.status.get_status(0, cwl_exit, '', '', logger)
-        engine = postgres.utils.get_db_engine(pg_file)
+        engine = postgres.utils.get_db_engine(args.db_config)
         postgres.utils.add_pipeline_status(engine, project, output_uuid, tumor_id, case_id, status, 
                                           loc, datetime_start, str(datetime.datetime.now()), '',   
                                           '', hostname, cwl_version, docker_version, statusclass)
